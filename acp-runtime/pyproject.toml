@@ -20,9 +20,9 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.12"
-acp-schema = "^0.1.0"
-acp-mcp = "^0.1.0"
-acp-compiler = "^0.1.0"
+acp-schema = {path = "../acp-schema", develop = true}
+acp-mcp = {path = "../acp-mcp", develop = true}
+acp-compiler = {path = "../acp-compiler", develop = true}
 pydantic = "^2.5"
 langchain = "^0.3"
 langchain-openai = "^0.3"

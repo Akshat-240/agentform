@@ -20,7 +20,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.12"
-acp-schema = "^0.1.0"
+acp-schema = {path = "../acp-schema", develop = true}
 pydantic = "^2.5"
 anyio = "^4.2"
 

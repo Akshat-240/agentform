@@ -21,15 +21,31 @@ classifiers = [
 [tool.poetry.scripts]
 acp = "acp_cli.main:app"
 
+# Note: For local development, use path dependencies via poetry install in the root
+# The CI workflow bundles all modules into acp_cli/ before publishing
+
 [tool.poetry.dependencies]
 python = "^3.12"
-acp-schema = "^0.1.0"
-acp-mcp = "^0.1.0"
-acp-compiler = "^0.1.0"
-acp-runtime = "^0.1.0"
+# CLI dependencies
 typer = ">=0.12,<1.0"
 rich = "^13.7"
 structlog = "^24.1.0"
+# From acp-schema
+pydantic = "^2.5"
+pyyaml = "^6.0"
+# From acp-mcp
+anyio = "^4.2"
+# From acp-runtime
+langchain = "^0.3"
+langchain-openai = "^0.3"
+langchain-anthropic = "^0.3"
+
+[tool.poetry.group.dev.dependencies]
+# Path dependencies for local development
+acp-schema = {path = "../acp-schema", develop = true}
+acp-mcp = {path = "../acp-mcp", develop = true}
+acp-compiler = {path = "../acp-compiler", develop = true}
+acp-runtime = {path = "../acp-runtime", develop = true}
 
 [build-system]
 requires = ["poetry-core"]
