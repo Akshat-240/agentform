@@ -24,6 +24,14 @@ acp-schema = {path = "../acp-schema", develop = true}
 pydantic = "^2.5"
 anyio = "^4.2"
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+pytest-asyncio = "^0.24"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

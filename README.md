@@ -1,92 +1,76 @@
 <p align="center">
-  <h1 align="center">ACP</h1>
-  <p align="center"><strong>Agent as Code Protocol</strong></p>
-  <p align="center">A declarative framework for defining AI agent systems using YAML</p>
+  <img src="https://img.shields.io/badge/🤖_ACP-Agent_as_Code_Protocol-6366f1?style=for-the-badge&labelColor=1e1b4b" alt="ACP" />
 </p>
 
 <p align="center">
-  <a href="#installation"><img src="https://img.shields.io/badge/python-3.12+-blue.svg" alt="Python 3.12+"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT License"></a>
-  <a href="#features"><img src="https://img.shields.io/badge/status-alpha-orange.svg" alt="Alpha"></a>
+  <strong>Define AI agent systems declaratively using YAML</strong>
 </p>
+
+<p align="center">
+  Think <em>Infrastructure as Code</em>, but for AI agents
+</p>
+
+<br />
+
+<p align="center">
+  <a href="https://pypi.org/project/acp-cli/"><img src="https://img.shields.io/pypi/v/acp-cli?style=flat-square&color=6366f1" alt="PyPI version"></a>
+  <a href="https://pypi.org/project/acp-cli/"><img src="https://img.shields.io/pypi/pyversions/acp-cli?style=flat-square" alt="Python 3.12+"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-22c55e?style=flat-square" alt="MIT License"></a>
+  <a href="#"><img src="https://img.shields.io/badge/status-alpha-f97316?style=flat-square" alt="Alpha"></a>
+</p>
+
+<br />
 
 ---
 
-## What is ACP?
+<br />
 
-**ACP (Agent as Code Protocol)** is a declarative framework that lets you define, configure, and orchestrate AI agent systems using simple YAML specifications. Instead of writing imperative code to manage agents, prompts, and workflows, you describe *what* you want in a structured configuration file, and ACP handles the *how*.
+## Why ACP?
 
-Think of it as **Infrastructure as Code, but for AI agents**. Define your agents, their capabilities, policies, and workflows in version-controlled YAML files, then execute them with a single command.
+Most AI agent frameworks require you to write imperative code - managing state, handling retries, wiring up tools. ACP takes a different approach: **describe your agents in YAML, and let the runtime engine handle the rest.**
 
-### Why ACP?
+```yaml
+# This is all you need to define an agent
+agents:
+  - name: reviewer
+    provider: openai
+    model: { preference: gpt-4o }
+    instructions: "Review code for security issues"
+    allow: [read_file, get_diff]
+    policy: strict
+```
 
-- **Declarative**: Focus on what your agents should do, not how to wire them together
-- **Reproducible**: Version-control your agent configurations alongside your code
-- **Composable**: Build complex multi-agent systems from simple, reusable components
-- **Safe**: Built-in policy enforcement for budgets, timeouts, and approval gates
-- **Extensible**: Connect to external tools via MCP (Model Context Protocol) servers
+**The result:** Your agent configurations become version-controlled artifacts that are easy to review, share, and reproduce.
 
-## Features
-
-- **YAML-First Configuration** — Define agents, workflows, and policies in human-readable YAML
-- **Multi-Provider Support** — Use OpenAI, Anthropic, or other LLM providers interchangeably
-- **Multi-Agent Orchestration** — Coordinate multiple specialized agents with conditional routing
-- **MCP Integration** — Connect to external tools and APIs via Model Context Protocol servers
-- **Policy Enforcement** — Set budgets, timeouts, and capability limits per agent
-- **Human-in-the-Loop** — Built-in approval gates for sensitive operations
-- **Execution Tracing** — Full visibility into workflow execution for debugging
-- **CLI Interface** — Validate specs and run workflows from the command line
+<br />
 
 ## Installation
 
-### Prerequisites
-
-- Python 3.12 or higher
-- [Poetry](https://python-poetry.org/) for dependency management
-
-### Quick Install
+### Quick Install (Recommended)
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-org/acp.git
-cd acp
-
-# Install with Poetry
-cd acp-cli
-poetry install
-
-# Verify installation
-poetry run acp --help
+pip install acp-cli
 ```
 
-### Development Setup
+That's it! You're ready to go.
 
-For development, install all packages in editable mode:
+### Verify Installation
 
 ```bash
-# Install each component
-cd acp-schema && poetry install && cd ..
-cd acp-mcp && poetry install && cd ..
-cd acp-compiler && poetry install && cd ..
-cd acp-runtime && poetry install && cd ..
-cd acp-cli && poetry install && cd ..
+acp --help
 ```
 
-### Environment Variables
-
-Set up your LLM provider API keys:
-
-```bash
-export OPENAI_API_KEY="your-openai-key"
-export ANTHROPIC_API_KEY="your-anthropic-key"
-
-# For MCP servers (e.g., GitHub)
-export GITHUB_PERSONAL_ACCESS_TOKEN="your-github-token"
-```
+<br />
 
 ## Quick Start
 
-### 1. Create a Simple Agent
+### 1. Set up your API key
+
+```bash
+export OPENAI_API_KEY="your-openai-key"
+```
+
+### 2. Create an agent spec
 
 Create a file called `my-agent.yaml`:
 
@@ -137,121 +121,109 @@ workflows:
         type: end
 ```
 
-### 2. Validate Your Spec
+### 3. Run it
 
 ```bash
-cd acp-cli
-poetry run acp validate ../my-agent.yaml
+# Validate your spec
+acp validate my-agent.yaml
+
+# Run with input
+acp run ask --spec my-agent.yaml --input '{"question": "What is the capital of France?"}'
 ```
 
-### 3. Run the Workflow
+<br />
 
-```bash
-# With inline input
-poetry run acp run ask --spec ../my-agent.yaml --input '{"question": "What is the capital of France?"}'
+## Features
 
-# Or interactively (prompts for missing inputs)
-poetry run acp run ask --spec ../my-agent.yaml
-```
+| Feature | Description |
+|---------|-------------|
+| **YAML-First** | Define agents, workflows, and policies in human-readable YAML |
+| **Multi-Provider** | Use OpenAI, Anthropic, or other LLM providers interchangeably |
+| **Multi-Agent** | Coordinate multiple specialized agents with conditional routing |
+| **MCP Integration** | Connect to external tools via Model Context Protocol servers |
+| **Policy Enforcement** | Set budgets, timeouts, and capability limits per agent |
+| **Human-in-the-Loop** | Built-in approval gates for sensitive operations |
+| **Execution Tracing** | Full visibility into workflow execution for debugging |
+
+<br />
 
 ## Architecture
 
-ACP is built as a modular monorepo with five core packages:
+ACP is built as a modular system with five core packages:
 
-```mermaid
-flowchart TB
-    subgraph UserLayer [User Layer]
-        YAML[YAML Spec File]
-        CLI[acp-cli]
-    end
-
-    subgraph CoreLayer [Core Layer]
-        Schema[acp-schema]
-        Compiler[acp-compiler]
-        Runtime[acp-runtime]
-    end
-
-    subgraph IntegrationLayer [Integration Layer]
-        MCP[acp-mcp]
-        LLM[LLM Providers]
-        External[External Tools]
-    end
-
-    YAML --> CLI
-    CLI --> Compiler
-    Compiler --> Schema
-    Compiler --> Runtime
-    Runtime --> MCP
-    Runtime --> LLM
-    MCP --> External
-
-    Schema -.->|Models & IR| Compiler
-    Schema -.->|Models & IR| Runtime
 ```
-
-### Package Overview
+┌─────────────────────────────────────────────────────────────┐
+│                      User Layer                             │
+│  ┌──────────────┐    ┌──────────────┐                       │
+│  │  YAML Spec   │───▶│   acp-cli    │                       │
+│  └──────────────┘    └──────┬───────┘                       │
+└─────────────────────────────┼───────────────────────────────┘
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      Core Layer                             │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐   │
+│  │  acp-schema  │◀───│ acp-compiler │───▶│ acp-runtime  │   │
+│  └──────────────┘    └──────────────┘    └──────┬───────┘   │
+└─────────────────────────────────────────────────┼───────────┘
+                                                  ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   Integration Layer                         │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐   │
+│  │   acp-mcp    │    │ LLM Providers│    │External Tools│   │
+│  └──────────────┘    └──────────────┘    └──────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+```
 
 | Package | Description |
 |---------|-------------|
-| **acp-schema** | Core Pydantic models for YAML specs and Intermediate Representation (IR) |
+| **acp-schema** | Core Pydantic models for YAML specs and Intermediate Representation |
 | **acp-compiler** | Parses YAML, validates specs, and generates IR for the runtime |
 | **acp-runtime** | Workflow execution engine with LLM integration and policy enforcement |
 | **acp-mcp** | MCP (Model Context Protocol) client for connecting to external tool servers |
 | **acp-cli** | Command-line interface for validating and running workflows |
 
-### How It Works
-
-1. **Define**: Write your agent configuration in YAML
-2. **Compile**: The compiler validates your spec and generates an Intermediate Representation
-3. **Execute**: The runtime processes the IR, coordinating agents, LLM calls, and external tools
-4. **Enforce**: Policies are checked at each step for budgets, timeouts, and approvals
+<br />
 
 ## Examples
 
 The `examples/` directory contains ready-to-use configurations:
 
-### Simple Agent (`simple-agent.yaml`)
-A basic question-answering agent using OpenAI.
+### Simple Agent
+
+A basic question-answering agent:
 
 ```bash
-poetry run acp run ask --spec examples/simple-agent.yaml
+acp run ask --spec examples/simple-agent.yaml --input '{"question": "Hello!"}'
 ```
 
-### Multi-Agent Router (`multi-agent.yaml`)
-Demonstrates conditional routing between a fast responder and a deep analyst based on task complexity.
+### Multi-Agent Router
+
+Conditional routing between agents based on task complexity:
 
 ```bash
-poetry run acp run smart_respond --spec examples/multi-agent.yaml --input '{"task": "Explain quantum computing"}'
+acp run smart_respond --spec examples/multi-agent.yaml --input '{"task": "Explain quantum computing"}'
 ```
 
-### PR Reviewer (`pr-reviewer.yaml`)
-A GitHub PR reviewer that uses MCP to fetch PR data and post reviews with human approval gates.
+### PR Reviewer with MCP
+
+GitHub PR reviewer with human approval gates:
 
 ```bash
-poetry run acp run review_pr --spec examples/pr-reviewer.yaml \
+export GITHUB_PERSONAL_ACCESS_TOKEN="your-token"
+
+acp run review_pr --spec examples/pr-reviewer.yaml \
   --input '{"owner": "your-org", "repo": "your-repo", "pr_number": 123}'
 ```
 
-### Filesystem Agent (`filesystem-agent.yaml`)
-An agent with filesystem access via MCP server integration.
+<br />
 
-## Usage
-
-### CLI Commands
-
-#### Validate a Specification
+## CLI Reference
 
 ```bash
+# Validate a specification
 acp validate <spec-file>
 
-# Examples
-acp validate my-agents.yaml
-acp validate examples/simple-agent.yaml
-```
-
-#### Run a Workflow
-
-```bash
+# Run a workflow
 acp run <workflow-name> [options]
 
 Options:
@@ -263,129 +235,39 @@ Options:
   -v, --verbose          Enable verbose output
 ```
 
-**Examples:**
+<br />
 
-```bash
-# Basic run
-acp run ask --spec my-agent.yaml
+---
 
-# With JSON input
-acp run ask --spec my-agent.yaml --input '{"question": "Hello!"}'
-
-# From input file
-acp run ask --spec my-agent.yaml --input-file input.json
-
-# Save output and trace
-acp run ask --spec my-agent.yaml -o result.json -t trace.json -v
-```
-
-## Configuration Reference
-
-### YAML Spec Structure
-
-```yaml
-version: "0.1"
-
-project:
-  name: my-project
-
-providers:
-  llm:
-    openai:
-      api_key: env:OPENAI_API_KEY
-      default_params:
-        temperature: 0.7
-        max_tokens: 2000
-
-servers:                    # Optional: MCP servers
-  - name: github
-    type: mcp
-    transport: stdio
-    command: ["npx", "@modelcontextprotocol/server-github"]
-    auth:
-      token: env:GITHUB_PERSONAL_ACCESS_TOKEN
-
-capabilities:               # Optional: Map server methods
-  - name: get_pr
-    server: github
-    method: get_pull_request
-    side_effect: read
-    requires_approval: false
-
-policies:
-  - name: default
-    budgets:
-      max_cost_usd_per_run: 1.00
-      max_capability_calls: 10
-      timeout_seconds: 120
-
-agents:
-  - name: my-agent
-    provider: openai
-    model:
-      preference: gpt-4o-mini
-      fallback: gpt-4o
-    params:
-      temperature: 0.5
-    instructions: |
-      Your agent instructions here...
-    allow: [get_pr]         # Allowed capabilities
-    policy: default
-
-workflows:
-  - name: my-workflow
-    entry: first-step
-    steps:
-      - id: first-step
-        type: llm
-        agent: my-agent
-        input:
-          data: $input.data
-        save_as: result
-        next: end
-
-      - id: end
-        type: end
-```
-
-### Step Types
-
-| Type | Description |
-|------|-------------|
-| `llm` | Execute an LLM call with a specified agent |
-| `call` | Call an external capability via MCP |
-| `condition` | Branch based on state evaluation |
-| `human_approval` | Pause for human approval/rejection |
-| `end` | Terminate the workflow |
-
-### Variable References
-
-- `$input.field` — Access input data
-- `$state.step_id` — Access saved step results
-- `$state.step_id.field` — Access nested result fields
+<br />
 
 ## Contributing
 
-We welcome contributions! Here's how to get started:
+We welcome contributions! Whether it's bug fixes, new features, or documentation improvements.
 
-### Development Workflow
+### Development Setup
 
-1. **Fork** the repository
-2. **Clone** your fork locally
-3. **Create a branch** for your feature/fix
-4. **Install** dependencies with Poetry
-5. **Make changes** and add tests
-6. **Run tests** to ensure everything works
-7. **Submit** a pull request
+#### Prerequisites
 
-### Code Style
+- Python 3.12 or higher
+- [Poetry](https://python-poetry.org/) for dependency management
 
-- Follow PEP 8 guidelines
-- Use type hints for all functions
-- Write docstrings for public APIs
-- Keep functions focused and small
+#### Clone and Install
 
-### Running Tests
+```bash
+# Clone the repository
+git clone https://github.com/acp-team/acp.git
+cd acp
+
+# Install all packages in development mode
+cd acp-schema && poetry install && cd ..
+cd acp-mcp && poetry install && cd ..
+cd acp-compiler && poetry install && cd ..
+cd acp-runtime && poetry install && cd ..
+cd acp-cli && poetry install && cd ..
+```
+
+#### Running Tests
 
 ```bash
 # Run tests for a specific package
@@ -396,31 +278,26 @@ poetry run pytest
 poetry run pytest --cov=acp_runtime
 ```
 
-### Reporting Issues
+### Project Structure
 
-Found a bug or have a feature request? Please [open an issue](https://github.com/your-org/acp/issues) with:
-
-- Clear description of the problem or feature
-- Steps to reproduce (for bugs)
-- Expected vs actual behavior
-- Your environment (Python version, OS)
-
-## Roadmap
-
-- [ ] Web UI for workflow visualization
-- [ ] Additional LLM provider support (Gemini, Ollama)
-- [ ] Workflow composition and imports
-- [ ] Parallel step execution
-- [ ] Cost tracking and analytics
-- [ ] Plugin system for custom step types
+```
+acp/
+├── acp-schema/      # Core data models
+├── acp-compiler/    # YAML parser and validator
+├── acp-runtime/     # Workflow execution engine
+├── acp-mcp/         # MCP client integration
+├── acp-cli/         # Command-line interface
+└── examples/        # Example configurations
+```
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+<br />
+
 ---
 
 <p align="center">
-  <strong>Built with ❤️ for the AI agent community</strong>
+  <sub>Built with ❤️ for the AI agent community</sub>
 </p>
-

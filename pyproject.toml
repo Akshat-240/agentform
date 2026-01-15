@@ -1,0 +1,13 @@
+[tool.pytest.ini_options]
+testpaths = [
+    "acp-schema/tests",
+    "acp-compiler/tests",
+    "acp-mcp/tests",
+    "acp-runtime/tests",
+]
+asyncio_mode = "auto"
+addopts = "-v"
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
