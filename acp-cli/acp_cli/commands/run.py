@@ -1,6 +1,7 @@
 """Run command for ACP CLI."""
 
 import asyncio
+import contextlib
 import json
 import re
 from pathlib import Path
@@ -351,6 +352,19 @@ def run(
     workflow_config = compiled.workflows[workflow]
     required_inputs = extract_input_fields(workflow_config)
     logger.info("workflow_config_loaded", workflow=workflow, required_inputs=list(required_inputs))
+
+    # Auto-populate input from variables when names match
+    if required_inputs and variables:
+        for field in required_inputs:
+            if field not in parsed_input and field in variables:
+                # Convert pr_number to int if it looks like a number
+                value_str = variables[field]
+                value: str | int = value_str
+                if field == "pr_number" or value_str.isdigit():
+                    with contextlib.suppress(ValueError):
+                        value = int(value_str)
+                parsed_input[field] = value
+                logger.info("input_auto_populated_from_var", field=field)
 
     if required_inputs and not parsed_input:
         # No input provided at all, prompt for all required fields
