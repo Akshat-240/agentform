@@ -1,6 +1,6 @@
 """Agentform Compiler - Compilation and validation for Agentform.
 
-Compiles native Agentform schema (.agentform) files.
+Compiles native Agentform schema (.af) files.
 """
 
 from agentform_compiler.agentform_ast import MergeError, ModuleBlock, merge_agentform_files

@@ -626,7 +626,7 @@ def parse_agentform_file(path: str | Path) -> AgentformFile:
     """Parse an Agentform file into an AST.
 
     Args:
-        path: Path to the .agentform file
+        path: Path to the .af file
 
     Returns:
         Parsed AgentformFile AST

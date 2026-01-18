@@ -48,7 +48,7 @@ class LoadedModule:
             parameters: Parameters passed to the module
         """
         self.name = name
-        self.agentform_file = agentform_file
+        self.af_file = agentform_file
         self.resolved = resolved
         self.parameters = parameters
 
@@ -74,13 +74,13 @@ class LoadedModule:
             Dict mapping resource type to list of names
         """
         return {
-            "providers": [p.full_name for p in self.agentform_file.providers],
-            "servers": [s.name for s in self.agentform_file.servers],
-            "capabilities": [c.name for c in self.agentform_file.capabilities],
-            "policies": [p.name for p in self.agentform_file.policies],
-            "models": [m.name for m in self.agentform_file.models],
-            "agents": [a.name for a in self.agentform_file.agents],
-            "workflows": [w.name for w in self.agentform_file.workflows],
+            "providers": [p.full_name for p in self.af_file.providers],
+            "servers": [s.name for s in self.af_file.servers],
+            "capabilities": [c.name for c in self.af_file.capabilities],
+            "policies": [p.name for p in self.af_file.policies],
+            "models": [m.name for m in self.af_file.models],
+            "agents": [a.name for a in self.af_file.agents],
+            "workflows": [w.name for w in self.af_file.workflows],
         }
 
 
