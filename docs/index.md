@@ -93,7 +93,7 @@ hide:
       <span class="prompt">$</span>
       <span>agentform init my-agent</span>
     </div>
-    <div style="color: #666; margin: 5px 0 15px 0;">Created agentform.af in ./my-agent</div>
+    <div style="color: #666; margin: 5px 0 15px 0;">Created my-agent.af in ./my-agent</div>
     
     <div class="command-line">
       <span class="prompt">$</span>

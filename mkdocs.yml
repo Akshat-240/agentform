@@ -2,7 +2,7 @@ site_name: Agentform
 site_description: Define AI agent systems declaratively using Agentform native schema
 repo_name: agentform-org/agentform
 repo_url: https://github.com/agentform-org/agentform
-copyright: Copyright &copy; 2024 Agentform Team
+copyright: Copyright &copy; 2024-2026 Agentform Team
 
 theme:
   name: material
@@ -79,7 +79,7 @@ extra_css:
   - stylesheets/extra_v4.css
 
 extra_javascript:
-  - https://unpkg.com/mermaid/dist/mermaid.min.js
+  - https://unpkg.com/mermaid@10.6.1/dist/mermaid.min.js
   - javascripts/mermaid-init.js
 
 extra:
@@ -88,5 +88,4 @@ extra:
       link: https://github.com/agentform-org/agentform
     - icon: fontawesome/brands/discord
       link: https://discord.gg/agentform
-    - icon: fontawesome/brands/twitter
-      link: https://twitter.com/agentform_ai
+
