@@ -67,9 +67,14 @@ model "gpt4o_mini" {
   id       = "gpt-4o-mini"
 }
 
+model "gpt35" {
+  provider = provider.llm.openai.default
+  id       = "gpt-3.5-turbo"
+}
+
 agent "assistant" {
   model           = model.gpt4o_mini
-  fallback_models = [model.gpt4o_mini] # Example fallback
+  fallback_models = [model.gpt35]
   instructions    = "You are a helpful assistant. Answer questions clearly and concisely."
   policy          = policy.default
 }
